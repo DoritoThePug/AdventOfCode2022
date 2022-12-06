@@ -29,14 +29,10 @@ with open('./day5/input.txt') as file:
         _, amount, _, origin, _, destination = line.split(' ')
 
 
-
         crates[int(destination)-1] = crates[int(origin)-1][int(amount)-1::-1] + crates[int(destination)-1]
+        crates[int(origin)-1] = crates[int(origin)-1][int(amount):] 
 
         crates2[int(destination)-1] = crates2[int(origin)-1][:int(amount)] + crates2[int(destination)-1]
-
-
-
-        crates[int(origin)-1] = crates[int(origin)-1][int(amount):] 
         crates2[int(origin)-1] = crates2[int(origin)-1][int(amount):] 
 
         

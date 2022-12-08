@@ -15,7 +15,6 @@ class Directory:
     def __repr__(self) -> str:
         return f"{self.name}"
     
-
     def calculate_file_size(self) -> int:
         return sum(self.files)
 
@@ -81,9 +80,9 @@ with open('./day7/input.txt', 'r') as file:
     
     root_directory.is_less_than_100000()
 
-    print(Directory.sum_t)
+    print("Part 1: ", Directory.sum_t)
 
     root_directory.space_needed_for_update(root_directory.get_size())
     root_directory.delete_smallest_space_for_update()
-    print(Directory.current_smallest)
+    print("Part 2: ", Directory.current_smallest)
     

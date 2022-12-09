@@ -1,4 +1,3 @@
-from itertools import zip_longest
 import numpy as np
 
 def find_first_tree_big(array, current_tree):
@@ -17,14 +16,7 @@ with open('./day8/input.txt', 'r') as file:
 
     tree_grid = np.array([list(tree.rstrip()) for tree in trees], dtype=int)
 
-
-
     x_size, y_size = tree_grid.shape
-
-    # print(find_first_tree_big(tree_grid[0:78, 51], 8))
-    # print(tree_grid[0:78, 51])
-    
-
 
 
     for y in range(0, y_size):
@@ -32,13 +24,6 @@ with open('./day8/input.txt', 'r') as file:
             current_tree = tree_grid[y][x]
 
             left, right, top, bottom = find_first_tree_big(np.flip(tree_grid[y][0:x]), current_tree), find_first_tree_big(tree_grid[y][x+1:x_size+1], current_tree), find_first_tree_big(np.flip(tree_grid[0:y, x]), current_tree), find_first_tree_big(tree_grid[y+1:x_size, x], current_tree)
-
-            # print(find_first_tree_big(tree_grid[y][0:x]))
-
-
-            
-
-            # top = [x for x in top if ]
 
             if top*bottom*left*right > best_scenic_score:
                 best_scenic_score = top*bottom*left*right

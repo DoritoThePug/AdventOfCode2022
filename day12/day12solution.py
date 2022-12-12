@@ -78,7 +78,7 @@ def astar(graph, start, end):
                 continue
 
             child.g = current_node.g + 1
-            child.h = (abs((child.position[0] - end_node.position[0])) + abs((child.position[1] - end_node.position[1]))) * 
+            child.h = (abs((child.position[0] - end_node.position[0])) + abs((child.position[1] - end_node.position[1])))
             child.f = child.g + child.h
 
             if child in open_list and child.g > start_node.g:

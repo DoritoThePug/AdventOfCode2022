@@ -1,3 +1,6 @@
+import threading
+import logging
+
 class Node:
     def __init__(self, parent=None, position=None) -> None:
         self.parent = parent
@@ -13,6 +16,8 @@ class Node:
 
 
 def astar(graph, start, end):
+    logging.info("Thread %s: starting", start)
+
     open_list = []
     closed_list = []
 
@@ -46,6 +51,7 @@ def astar(graph, start, end):
                 path.append(current.position)
                 current = current.parent
 
+            logging.info("Thread %s: finnishing", start)    
             return path[::-1]
 
         
@@ -72,7 +78,7 @@ def astar(graph, start, end):
                 continue
 
             child.g = current_node.g + 1
-            child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
+            child.h = (abs((child.position[0] - end_node.position[0])) + abs((child.position[1] - end_node.position[1]))) * 
             child.f = child.g + child.h
 
             if child in open_list and child.g > start_node.g:
@@ -86,18 +92,21 @@ def parse_input():
         lines = file.read().split('\n')
 
         graph = []
-        start_node, end_node = None, None
+        start_nodes, end_node = [], None
 
         for y, line in enumerate(lines):
             current_row = []
 
             for x, char in enumerate(line):
                 if char == 'S':
-                    start_node = (x, y)
+                    start_nodes.append((x, y))
                     current_row.append(ord('a'))
                 elif char == 'E':
                     end_node = (x, y)
                     current_row.append(ord('z'))
+                elif char == 'a':
+                    start_nodes.append((x, y))
+                    current_row.append(ord(char))
                 else:
                     current_row.append(ord(char))
 
@@ -105,17 +114,38 @@ def parse_input():
 
 
 
-        return graph, start_node, end_node
+        return graph, start_nodes, end_node
 
     
-def main():
-    graph, start_node, end_node = parse_input()
+graph, start_nodes, end_node = parse_input()
+
+distances = []
 
 
+def main(start_node):
     path = astar(graph, start_node, end_node)
 
-    print(len(path)-1)
+    try:
+        distances.append(len(path)-1)
+    except TypeError:
+        pass
+
 
 if __name__ == '__main__':
-    main()
-        
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO,
+                        datefmt="%H:%M:%S")
+
+    threads = list()
+    for start_node in start_nodes:
+        x = threading.Thread(target=main, args=(start_node,))
+        threads.append(x)
+        x.start()
+
+    for index, thread in enumerate(threads):
+        logging.info("Main    : before joining thread %d.", index)
+        thread.join()
+        logging.info("Main    : thread %d done", index)
+
+
+    print(min(distances))

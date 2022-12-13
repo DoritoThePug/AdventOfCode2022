@@ -23,7 +23,7 @@ def test(first, second):
                 return False
         elif isinstance(first_2, list) and isinstance(second_2, int):
             if test(first_2, [second_2]):
-                return True
+                continue
             else:
                 return False
         elif isinstance(first_2, int) and isinstance(second_2, list):
@@ -36,4 +36,4 @@ def test(first, second):
     return True
 
 
-print(test([[2, 0]], [[2], [7]]))
+print(test([[1], 4], [1, [2, [3, [4, [5, 6, 0]]]], 8, 9]))

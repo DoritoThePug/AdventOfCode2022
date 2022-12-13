@@ -372,6 +372,9 @@ def test(first, second):
 #     print(f"Part 1: {sum}")
 
 
+def mer
+
+
 def parse_input() -> str:
     with open("day13\input.txt", "r") as f:
         lines = f.read().split('\n\n')
@@ -382,8 +385,3 @@ def parse_input() -> str:
 
 
 # print(parse_input())
-
-
-input_2.sort(key=cmp_to_key(test))
-
-print(input_2)

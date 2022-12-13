@@ -310,22 +310,30 @@ input_2 = [[[[6,10],[4,3,[4]]]],
 
 input_test = [[1,1,3,1,1],
 [1,1,5,1,1],
+
 [[1],[2,3,4]],
 [[1],4],
+
 [9],
 [[8,7,6]],
+
 [[4,4],4,4],
 [[4,4],4,4,4],
+
 [7,7,7,7],
 [7,7,7],
+
 [],
 [3],
+
 [[[]]],
 [[]],
+
 [1,[2,[3,[4,[5,6,7]]]],8,9],
-[1,[2,[3,[4,[5,6,0]]]],8,9],
-[[2]],
-[[6]]]
+[1,[2,[3,[4,[5,6,0]]]],8,9], 
+[[6]],
+[[2]]
+]
 
 
 def test(first, second):
@@ -350,18 +358,21 @@ def test(first, second):
             else:
                 return False
         elif isinstance(first_2, list) and isinstance(second_2, int):
-            if test(first_2, [second_2]):
-                return True
+            if [second_2] != first_2:
+                if test(first_2, [second_2]):
+                    return True
+                else:
+                    return False
             else:
                 return False
         elif isinstance(first_2, int) and isinstance(second_2, list):
-            if test([first_2], second_2):
-                return True
+            if [first_2] != second_2:
+                if test([first_2], second_2):
+                    return True
+                else:
+                    return False
             else:
-                return False
-
-
-    return True
+                continue
 
 
 def solution(input) -> None:
@@ -378,40 +389,81 @@ def solution(input) -> None:
     print(f"Part 1: {sum}")
 
 
-def merge_sort(list):
-    # make merge sort
-    if len(list) > 1:
-        L = list[:len(list) // 2]
-        R = list[len(list) // 2:]
+# def merge_sort(list):
+#     # make merge sort
+#     if len(list) > 1:
+#         L = list[:len(list) // 2]
+#         R = list[len(list) // 2:]
 
-        merge_sort(L)
-        merge_sort(R)
+#         merge_sort(L)
+#         merge_sort(R)
 
-        i = j = k = 0
+#         i=0
+#         j=0
+#         k=0
 
 
-        while j < len(L) and i < len(R):
-            if test(L[j], R[i]):
-                list[k] = L[j]
-                j += 1
-            else:
-                list[k] = R[i]
-                i += 1
+#         while j < len(L) and i < len(R):
+#             if test(L[j], R[i]):
+#                 list[k] = L[j]
+#                 j += 1
+#             else:
+#                 list[k] = R[i]
+#                 i += 1
 
-            k+=1
+#             k+=1
 
-        while i < len(R):
-            list[k] = R[i]
-            i += 1
-            k += 1
+#         while i < len(R):
+#             list[k] = R[i]
+#             i += 1
+#             k += 1
         
-        while j < len(L):
-            list[k] = L[j]
-            j += 1
-            k += 1
+#         while j < len(L):
+#             list[k] = L[j]
+#             j += 1
+#             k += 1
 
             
-
+def mergeSort(arr):
+    if len(arr) > 1:
+ 
+         # Finding the mid of the array
+        mid = len(arr)//2
+ 
+        # Dividing the array elements
+        L = arr[:mid]
+ 
+        # into 2 halves
+        R = arr[mid:]
+ 
+        # Sorting the first half
+        mergeSort(L)
+ 
+        # Sorting the second half
+        mergeSort(R)
+ 
+        i = j = k = 0
+ 
+        # Copy data to temp arrays L[] and R[]
+        while i < len(L) and j < len(R):
+            if test(L[i] ,R[j]):
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+ 
+        # Checking if any element was left
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+ 
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
 
 def parse_input() -> str:
     with open("day13\input.txt", "r") as f:
@@ -422,12 +474,51 @@ def parse_input() -> str:
         return lines
 
 
+def bubble_sort(list):
+    sorted_list = []
+
+    for i in range(len(list)):
+        for j in range(len(list)-1):
+            if test(list[j], list[j+1]):
+                list[j], list[j+1] = list[j+1], list[j]
+
+    return list
+
+
 # print(parse_input())
 
 
-# solution(input)
+solution(input)
 
-merge_sort(input_2)
+x = [[1,1,3,1,1],
+[1,1,5,1,1],
 
-for line in input_2:
-    print(line)
+[[1],[2,3,4]],
+[[1],4],
+
+[9],
+[[8,7,6]],
+
+[[4,4],4,4],
+[[4,4],4,4,4],
+
+[7,7,7,7],
+[7,7,7],
+
+[],
+[3],
+
+[[[]]],
+[[]],
+
+[1,[2,[3,[4,[5,6,7]]]],8,9],
+[1,[2,[3,[4,[5,6,0]]]],8,9],
+]
+
+mergeSort(input_2)
+
+print((input_2.index([[2]])+1) * (input_2.index([[6]])+1))
+
+
+# for line in input_test:
+#     print(line)
